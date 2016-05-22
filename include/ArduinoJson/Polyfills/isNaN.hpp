@@ -9,38 +9,13 @@
 
 // If Visual Studo <= 2012
 #if defined(_MSC_VER) && _MSC_VER <= 1700
-#include <float.h>
+#include "isNaN.vs2012.hpp"
+
+// If C++11 or above
+#elif __cplusplus >= 201103
+#include "isNaN.cpp11.hpp"
+
+// Otherwise
 #else
-#include <math.h>
+#include "isNaN.default.hpp"
 #endif
-
-namespace ArduinoJson {
-namespace Polyfills {
-
-// If Visual Studo <= 2012
-#if defined(_MSC_VER) && _MSC_VER <= 1700
-template <typename T>
-bool isNaN(T x) {
-  return _isnan(x) != 0;
-}
-#else
-template <typename T>
-bool isNaN(T x) {
-  return isnan(x);
-}
-
-#ifdef __GLIBC__
-template <>
-inline bool isNaN<double>(double x) {
-  return isnanl(x);
-}
-
-template <>
-inline bool isNaN<float>(float x) {
-  return isnanf(x);
-}
-#endif
-
-#endif
-}
-}
