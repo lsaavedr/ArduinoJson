@@ -12,5 +12,6 @@
 
 #include "ArduinoJson/JsonArray.ipp"
 #include "ArduinoJson/JsonObject.ipp"
+#include "ArduinoJson/JsonVariant.ipp"
 
 using namespace ArduinoJson;
