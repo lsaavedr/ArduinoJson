@@ -156,7 +156,10 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
   // Returns a reference an invalid JsonArray.
   // This object is meant to replace a NULL pointer.
   // This is used when memory allocation or JSON parsing fail.
-  static JsonArray &invalid() { return _invalid; }
+  static JsonArray &invalid() {
+    static JsonArray instance(NULL);
+    return instance;
+  }
 
   // Serialize the array to the specified JsonWriter.
   void writeTo(Internals::JsonWriter &writer) const;
@@ -230,5 +233,3 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
   static JsonArray _invalid;
 };
 }
-
-#include "JsonArray.ipp"

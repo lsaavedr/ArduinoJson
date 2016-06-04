@@ -58,6 +58,12 @@ inline T JsonArray::get(size_t index) const {
   return node ? node->content.as<T>() : JsonVariant::defaultValue<T>();
 }
 
+inline JsonArray::node_type *JsonArray::getNodeAt(size_t index) const {
+  node_type *node = _firstNode;
+  while (node && index--) node = node->next;
+  return node;
+}
+
 template <typename T>
 inline bool JsonArray::is(size_t index) const {
   node_type *node = getNodeAt(index);
@@ -97,5 +103,23 @@ inline JsonArray &JsonObject::createNestedArray(JsonObjectKey key) {
   JsonArray &array = _buffer->createArray();
   setNodeAt<const JsonVariant &>(key, array);
   return array;
+}
+
+inline void JsonArray::removeAt(size_t index) { removeNode(getNodeAt(index)); }
+
+inline void JsonArray::writeTo(Internals::JsonWriter &writer) const {
+  writer.beginArray();
+
+  const node_type *child = _firstNode;
+  while (child) {
+    child->content.writeTo(writer);
+
+    child = child->next;
+    if (!child) break;
+
+    writer.writeComma();
+  }
+
+  writer.endArray();
 }
 }
