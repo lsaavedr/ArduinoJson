@@ -56,7 +56,7 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
       : Internals::List<JsonVariant>(buffer) {}
 
   // Gets the value at the specified index
-  FORCE_INLINE JsonVariant operator[](size_t index) const;
+  FORCE_INLINE JsonVariant operator[](size_t index) const { return get(index); }
 
   // Gets or sets the value at specified index
   FORCE_INLINE JsonArraySubscript operator[](size_t index);
@@ -171,7 +171,21 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
   }
 
   // Serialize the array to the specified JsonWriter.
-  void writeTo(Internals::JsonWriter &writer) const;
+  void writeTo(Internals::JsonWriter &writer) const {
+    writer.beginArray();
+
+    const node_type *child = _firstNode;
+    while (child) {
+      child->content.writeTo(writer);
+
+      child = child->next;
+      if (!child) break;
+
+      writer.writeComma();
+    }
+
+    writer.endArray();
+  }
 
   // Imports a 1D array
   template <typename T, size_t N>

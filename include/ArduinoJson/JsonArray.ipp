@@ -13,26 +13,12 @@
 
 namespace ArduinoJson {
 
-inline JsonArraySubscript JsonArray::operator[](size_t index) {
-  return JsonArraySubscript(*this, index);
-}
-
-inline JsonVariant JsonArray::operator[](size_t index) const {
-  return get(index);
-}
-
 template <>
 inline bool JsonArray::setNodeValue(node_type *node, String &value) {
   const char *copy = _buffer->strdup(value);
   if (!copy) return false;
   node->content = copy;
   return true;
-}
-
-template <typename TImplem>
-inline const JsonArraySubscript JsonVariantBase<TImplem>::operator[](
-    int index) const {
-  return asArray()[index];
 }
 
 template <>
@@ -62,21 +48,5 @@ inline JsonArray &JsonObject::createNestedArray(JsonObjectKey key) {
   JsonArray &array = _buffer->createArray();
   setNodeAt<const JsonVariant &>(key, array);
   return array;
-}
-
-inline void JsonArray::writeTo(Internals::JsonWriter &writer) const {
-  writer.beginArray();
-
-  const node_type *child = _firstNode;
-  while (child) {
-    child->content.writeTo(writer);
-
-    child = child->next;
-    if (!child) break;
-
-    writer.writeComma();
-  }
-
-  writer.endArray();
 }
 }
