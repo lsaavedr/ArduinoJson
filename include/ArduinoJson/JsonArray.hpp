@@ -227,7 +227,11 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
   }
 
  private:
-  node_type *getNodeAt(size_t index) const;
+  NO_INLINE node_type *getNodeAt(size_t index) const {
+    node_type *node = _firstNode;
+    while (node && index--) node = node->next;
+    return node;
+  }
 
   template <typename TValue>
   bool setNodeAt(size_t index, TValue value) {

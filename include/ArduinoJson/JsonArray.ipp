@@ -29,12 +29,6 @@ inline bool JsonArray::setNodeValue(node_type *node, String &value) {
   return true;
 }
 
-inline JsonArray::node_type *JsonArray::getNodeAt(size_t index) const {
-  node_type *node = _firstNode;
-  while (node && index--) node = node->next;
-  return node;
-}
-
 template <typename TImplem>
 inline const JsonArraySubscript JsonVariantBase<TImplem>::operator[](
     int index) const {
