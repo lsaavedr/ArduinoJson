@@ -14,6 +14,8 @@
 using namespace ArduinoJson;
 using namespace ArduinoJson::Internals;
 
+JsonArray JsonArray::_invalid(NULL);
+
 JsonArray &JsonBuffer::createArray() {
   JsonArray *ptr = new (this) JsonArray(this);
   return ptr ? *ptr : JsonArray::invalid();
