@@ -11,5 +11,6 @@
 #include "ArduinoJson/StaticJsonBuffer.hpp"
 
 #include "ArduinoJson/JsonArray.ipp"
+#include "ArduinoJson/JsonObject.ipp"
 
 using namespace ArduinoJson;
