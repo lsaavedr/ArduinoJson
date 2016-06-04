@@ -21,24 +21,6 @@ inline JsonVariant JsonArray::operator[](size_t index) const {
   return get(index);
 }
 
-template <typename TValue>
-inline bool JsonArray::addNode(TValue value) {
-  node_type *node = addNewNode();
-  return node != NULL && setNodeValue<TValue>(node, value);
-}
-
-template <typename TValue>
-inline bool JsonArray::setNodeAt(size_t index, TValue value) {
-  node_type *node = getNodeAt(index);
-  return node != NULL && setNodeValue<TValue>(node, value);
-}
-
-template <typename TValue>
-inline bool JsonArray::setNodeValue(node_type *node, TValue value) {
-  node->content = value;
-  return true;
-}
-
 template <>
 inline bool JsonArray::setNodeValue(node_type *node, String &value) {
   const char *copy = _buffer->strdup(value);
@@ -47,27 +29,10 @@ inline bool JsonArray::setNodeValue(node_type *node, String &value) {
   return true;
 }
 
-inline JsonVariant JsonArray::get(size_t index) const {
-  node_type *node = getNodeAt(index);
-  return node ? node->content : JsonVariant();
-}
-
-template <typename T>
-inline T JsonArray::get(size_t index) const {
-  node_type *node = getNodeAt(index);
-  return node ? node->content.as<T>() : JsonVariant::defaultValue<T>();
-}
-
 inline JsonArray::node_type *JsonArray::getNodeAt(size_t index) const {
   node_type *node = _firstNode;
   while (node && index--) node = node->next;
   return node;
-}
-
-template <typename T>
-inline bool JsonArray::is(size_t index) const {
-  node_type *node = getNodeAt(index);
-  return node ? node->content.is<T>() : false;
 }
 
 template <typename TImplem>
@@ -104,8 +69,6 @@ inline JsonArray &JsonObject::createNestedArray(JsonObjectKey key) {
   setNodeAt<const JsonVariant &>(key, array);
   return array;
 }
-
-inline void JsonArray::removeAt(size_t index) { removeNode(getNodeAt(index)); }
 
 inline void JsonArray::writeTo(Internals::JsonWriter &writer) const {
   writer.beginArray();

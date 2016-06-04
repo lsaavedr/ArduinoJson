@@ -132,15 +132,24 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
   }
 
   // Gets the value at the specified index.
-  FORCE_INLINE JsonVariant get(size_t index) const;
+  FORCE_INLINE JsonVariant get(size_t index) const {
+    node_type *node = getNodeAt(index);
+    return node ? node->content : JsonVariant();
+  }
 
   // Gets the value at the specified index.
   template <typename T>
-  FORCE_INLINE T get(size_t index) const;
+  FORCE_INLINE T get(size_t index) const {
+    node_type *node = getNodeAt(index);
+    return node ? node->content.as<T>() : JsonVariant::defaultValue<T>();
+  }
 
   // Check the type of the value at specified index.
   template <typename T>
-  FORCE_INLINE bool is(size_t index) const;
+  FORCE_INLINE bool is(size_t index) const {
+    node_type *node = getNodeAt(index);
+    return node ? node->content.is<T>() : false;
+  }
 
   // Creates a JsonArray and adds a reference at the end of the array.
   // It's a shortcut for JsonBuffer::createArray() and JsonArray::add()
@@ -151,7 +160,7 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
   JsonObject &createNestedObject();
 
   // Removes element at specified index.
-  void removeAt(size_t index);
+  void removeAt(size_t index) { removeNode(getNodeAt(index)); }
 
   // Returns a reference an invalid JsonArray.
   // This object is meant to replace a NULL pointer.
@@ -221,13 +230,22 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
   node_type *getNodeAt(size_t index) const;
 
   template <typename TValue>
-  bool setNodeAt(size_t index, TValue value);
+  bool setNodeAt(size_t index, TValue value) {
+    node_type *node = getNodeAt(index);
+    return node != NULL && setNodeValue<TValue>(node, value);
+  }
 
   template <typename TValue>
-  bool addNode(TValue);
+  bool addNode(TValue value) {
+    node_type *node = addNewNode();
+    return node != NULL && setNodeValue<TValue>(node, value);
+  }
 
   template <typename T>
-  FORCE_INLINE bool setNodeValue(node_type *, T value);
+  FORCE_INLINE bool setNodeValue(node_type *node, T value) {
+    node->content = value;
+    return true;
+  }
 
   // The instance returned by JsonArray::invalid()
   static JsonArray _invalid;
