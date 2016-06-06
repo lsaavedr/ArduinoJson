@@ -14,35 +14,33 @@
 #include <math.h>
 #endif
 
+// GCC warning: "conversion to 'float' from 'double' may alter its value"
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 namespace ArduinoJson {
 namespace Polyfills {
 
 // If Visual Studo <= 2012
 #if defined(_MSC_VER) && _MSC_VER <= 1700
+
 template <typename T>
 bool isNaN(T x) {
   return _isnan(x) != 0;
 }
 #else
+
 template <typename T>
 bool isNaN(T x) {
   return isnan(x);
 }
 
-#if defined(_GLIBCXX_HAVE_ISNANL) && _GLIBCXX_HAVE_ISNANL
-template <>
-inline bool isNaN<double>(double x) {
-  return isnanl(x);
-}
 #endif
+}
+}
 
-#if defined(_GLIBCXX_HAVE_ISNANF) && _GLIBCXX_HAVE_ISNANF
-template <>
-inline bool isNaN<float>(float x) {
-  return isnanf(x);
-}
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif
-
-#endif
-}
-}

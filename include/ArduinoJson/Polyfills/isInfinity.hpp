@@ -14,6 +14,12 @@
 #include <math.h>
 #endif
 
+// GCC warning: "conversion to 'float' from 'double' may alter its value"
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 namespace ArduinoJson {
 namespace Polyfills {
 
@@ -45,3 +51,7 @@ inline bool isInfinity<float>(float x) {
 #endif
 }
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
