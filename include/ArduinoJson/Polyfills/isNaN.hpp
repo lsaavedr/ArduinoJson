@@ -28,19 +28,6 @@ template <typename T>
 bool isNaN(T x) {
   return isnan(x);
 }
-
-#ifdef __GLIBC__
-template <>
-inline bool isNaN<double>(double x) {
-  return isnanl(x);
-}
-
-template <>
-inline bool isNaN<float>(float x) {
-  return isnanf(x);
-}
-#endif
-
 #endif
 }
 }

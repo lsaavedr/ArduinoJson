@@ -28,18 +28,6 @@ template <typename T>
 bool isInfinity(T x) {
   return isinf(x);
 }
-
-#ifdef __GLIBC__
-template <>
-inline bool isInfinity<double>(double x) {
-  return isinfl(x);
-}
-
-template <>
-inline bool isInfinity<float>(float x) {
-  return isinff(x);
-}
-#endif
 #endif
 }
 }
