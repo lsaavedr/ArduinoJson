@@ -15,8 +15,10 @@
 #endif
 
 // GCC warning: "conversion to 'float' from 'double' may alter its value"
-#if defined(__GNUC__)
+#ifdef __GNUC__
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 6)
 #pragma GCC diagnostic push
+#endif
 #pragma GCC diagnostic ignored "-Wconversion"
 #endif
 
@@ -53,5 +55,7 @@ inline bool isInfinity<float>(float x) {
 }
 
 #if defined(__GNUC__)
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 6)
 #pragma GCC diagnostic pop
+#endif
 #endif
