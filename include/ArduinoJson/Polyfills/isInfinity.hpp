@@ -16,10 +16,14 @@
 
 // GCC warning: "conversion to 'float' from 'double' may alter its value"
 #ifdef __GNUC__
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 6)
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
 #pragma GCC diagnostic push
 #endif
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9)
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#else
 #pragma GCC diagnostic ignored "-Wconversion"
+#endif
 #endif
 
 namespace ArduinoJson {
@@ -55,7 +59,7 @@ inline bool isInfinity<float>(float x) {
 }
 
 #if defined(__GNUC__)
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 6)
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
 #pragma GCC diagnostic pop
 #endif
 #endif
