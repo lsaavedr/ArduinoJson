@@ -28,6 +28,21 @@ template <typename T>
 bool isNaN(T x) {
   return isnan(x);
 }
+
+#if defined(_GLIBCXX_HAVE_ISNANL) && _GLIBCXX_HAVE_ISNANL
+template <>
+inline bool isNaN<double>(double x) {
+  return isnanl(x);
+}
+#endif
+
+#if defined(_GLIBCXX_HAVE_ISNANF) && _GLIBCXX_HAVE_ISNANF
+template <>
+inline bool isNaN<float>(float x) {
+  return isnanf(x);
+}
+#endif
+
 #endif
 }
 }

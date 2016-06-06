@@ -28,6 +28,20 @@ template <typename T>
 bool isInfinity(T x) {
   return isinf(x);
 }
+
+#if defined(_GLIBCXX_HAVE_ISINFL) && _GLIBCXX_HAVE_ISINFL
+template <>
+inline bool isInfinity<double>(double x) {
+  return isinfl(x);
+}
+#endif
+
+#if defined(_GLIBCXX_HAVE_ISINFF) && _GLIBCXX_HAVE_ISINFF
+template <>
+inline bool isInfinity<float>(float x) {
+  return isinff(x);
+}
+#endif
 #endif
 }
 }
