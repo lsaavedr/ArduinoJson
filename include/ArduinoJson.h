@@ -10,7 +10,9 @@
 #include "ArduinoJson/JsonObject.hpp"
 #include "ArduinoJson/StaticJsonBuffer.hpp"
 
+#include "ArduinoJson/Internals/JsonParser.ipp"
 #include "ArduinoJson/JsonArray.ipp"
+#include "ArduinoJson/JsonBuffer.ipp"
 #include "ArduinoJson/JsonObject.ipp"
 #include "ArduinoJson/JsonVariant.ipp"
 

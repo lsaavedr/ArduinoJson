@@ -26,7 +26,7 @@ inline const char *skipCppStyleComment(const char *ptr) {
   }
 }
 
-const char *skipSpacesAndComments(const char *ptr) {
+inline const char *skipSpacesAndComments(const char *ptr) {
   for (;;) {
     switch (ptr[0]) {
       case ' ':
