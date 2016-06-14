@@ -35,7 +35,7 @@ class Encoding {
 
  private:
   static const char *escapeTable(bool excludeIdenticals) {
-    return "\"\"\\\\b\bf\fn\nr\rt\t" + (excludeIdenticals ? 4 : 0);
+    return &"\"\"\\\\b\bf\fn\nr\rt\t"[excludeIdenticals ? 4 : 0];
   }
 };
 }
