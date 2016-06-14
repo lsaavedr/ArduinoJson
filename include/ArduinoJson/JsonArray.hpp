@@ -56,7 +56,9 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
       : Internals::List<JsonVariant>(buffer) {}
 
   // Gets the value at the specified index
-  JsonVariant operator[](size_t index) const { return get(index); }
+  JsonVariant operator[](size_t index) const {
+    return get(index);
+  }
 
   // Gets or sets the value at specified index
   JsonArraySubscript operator[](size_t index);
@@ -156,12 +158,17 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
   JsonObject &createNestedObject();
 
   // Removes element at specified index.
-  void removeAt(size_t index) { removeNode(getNodeAt(index)); }
+  void removeAt(size_t index) {
+    removeNode(getNodeAt(index));
+  }
 
   // Returns a reference an invalid JsonArray.
   // This object is meant to replace a NULL pointer.
   // This is used when memory allocation or JSON parsing fail.
-  static JsonArray &invalid() { return _invalid; }
+  static JsonArray &invalid() {
+    static JsonArray instance(NULL);
+    return instance;
+  }
 
   // Serialize the array to the specified JsonWriter.
   void writeTo(Internals::JsonWriter &writer) const {
@@ -257,8 +264,5 @@ class JsonArray : public Internals::JsonPrintable<JsonArray>,
     node->content = value;
     return true;
   }
-
-  // The instance returned by JsonArray::invalid()
-  static JsonArray _invalid;
 };
 }
