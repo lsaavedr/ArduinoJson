@@ -9,5 +9,6 @@
 #include "ArduinoJson/JsonArray.hpp"
 #include "ArduinoJson/JsonObject.hpp"
 #include "ArduinoJson/StaticJsonBuffer.hpp"
+#include "ArduinoJson/StaticSharedJsonBuffer.hpp"
 
 using namespace ArduinoJson;
